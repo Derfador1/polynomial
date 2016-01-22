@@ -51,47 +51,16 @@ char *poly_to_string(polynomial *p)
 	memset(str, '\0', sizeof(char*)*100);
 	memset(storage, '\0', sizeof(char*)*100);
 
-	int coeff = 0;
-	int exp = 0;
 	size_t var = 50;
 
-	//need to add check for if it is 0 or not
+	while(p) {;
+		printf("exp: %d\n", p->exp);
+		printf("coeff: %d\n", p->coeff);
 
-	//if(coeff)
-
-	while(p) {
-		coeff = p->coeff;
-		exp = p->exp;
-
-		//printf("exp: %d\n", exp);
-		//printf("coeff: %d\n", coeff);
-
-		if(coeff)
+		if(p->coeff)
 		{
-			if (coeff > 1)
-			{
-				snprintf(storage, var, "+%d", coeff);
-				//strncat(str, storage, strlen(storage)+20);
-			}
-			else if(coeff < -1)
-			{
-				snprintf(storage, var, "%d", coeff);
-			}
-			else if(exp == 0)
-			{
-				snprintf(storage, var, "%d", coeff);
-			}
+			if (p->coeff > 1)
 
-			//strncat(str, storage, var);
-
-			if(exp > 1 || exp <= -1)
-			{
-				snprintf(storage, var, "x^%d", exp);
-			}
-			else if(exp == 1)
-			{
-				snprintf(storage, var, "x");
-			}
 
 			var += strlen(storage);
 			strncat(str, storage, var);
@@ -113,52 +82,53 @@ polynomial *add_poly(polynomial *a, polynomial *b)
 
 	while(a || b) 
 	{
-		printf("poop\n");
+		//printf("A: %d B: %d\n", a->exp, b->exp);
 		if (a && b)
 		{
-			printf("same\n");
+			printf("A: %d B: %d\n", a->exp, b->exp);
 			if (a->exp > b->exp)
 			{
-				printf("same1\n");
 				new->coeff = a->coeff;
 				new->exp = a->exp;
 				new->next = make_term(0,0);
 				new = new->next;
+				printf("%d\n", a->exp);
 				a = a->next;
 			}
 			else if(a->exp < b->exp)
 			{
-				printf("%d\n", a->exp);
-				printf("%d\n",b->exp);
-				printf("same2\n");
 				new->coeff = b->coeff;
 				new->exp = b->exp;
 				new->next = make_term(0,0);
 				new = new->next;
+				printf("if 2\n");
 				b = b->next;
 			}
 			else if(a->exp == b->exp)
 			{
-				printf("same3\n");
-				new->coeff = b->coeff + a->coeff;
-				new->exp = b->exp;
+				printf("here\n");
+				new->coeff = a->coeff + b->coeff;
+				new->exp = b->exp; 
 				new->next = make_term(0,0);
 				new = new->next;
+				printf("if 3\n");
 				a = a->next;
 				b = b->next;
 			}
 		}
 		else if(a)
 		{
-			printf("jhere\n");
 			new->next = make_term(a->coeff, a->exp);
+			new = new->next;
 			a = a->next;
+			printf("hello\n");
 		}
 
 		else if(b)
 		{
-			printf("ihere\n");
 			new->next = make_term(b->coeff, b->exp);
+			new = new->next;
+			printf("b\n");
 			b = b->next;
 		}
 	}
@@ -172,15 +142,21 @@ polynomial *sub_poly(polynomial *a, polynomial *b)
 	struct term *new = make_term(0, 0);
 	struct term *head = new;
 
+	/*
+	while(b)
+	{
+		b->coeff *= -1;
+		b = b->next;
+	}
+	*/
+
+
 	while(a || b) 
 	{
-		printf("while loop\n");
 		if (a && b)
 		{
-			printf("first if\n");
 			if (a->exp > b->exp)
 			{
-				printf("same1\n");
 				new->coeff = a->coeff;
 				new->exp = a->exp;
 				new->next = make_term(0,0);
@@ -189,7 +165,7 @@ polynomial *sub_poly(polynomial *a, polynomial *b)
 			}
 			else if(a->exp < b->exp)
 			{
-				printf("same2\n");
+
 				new->coeff = b->coeff;
 				new->exp = b->exp;
 				new->next = make_term(0,0);
@@ -198,7 +174,6 @@ polynomial *sub_poly(polynomial *a, polynomial *b)
 			}
 			else if(a->exp == b->exp)
 			{
-				printf("same3\n");
 				new->coeff = a->coeff - b->coeff;
 				new->exp = b->exp;
 				new->next = make_term(0,0);
@@ -209,16 +184,14 @@ polynomial *sub_poly(polynomial *a, polynomial *b)
 		}
 		else if(a)
 		{
-			printf("jhere\n");
 			new->next = make_term(a->coeff, a->exp);
+			new = new->next;
 			a = a->next;
 		}
 		else if(b)
 		{
-			printf("ihere\n");
-			printf("exp: %d\n", b->exp);
-			printf("coeff: %d\n", b->coeff);
 			new->next = make_term(b->coeff, b->exp);
+			new = new->next;
 			b = b->next;
 		}
 
