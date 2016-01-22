@@ -60,3 +60,30 @@ char *poly_to_string(polynomial *p)
 	}
 }
 
+polynomial *add_poly(polynomial *a, polynomial *b)
+{
+	struct term *tmp = malloc(sizeof(*tmp));
+
+	while(a && b != NULL) {
+		if (a->exp == b->exp) {
+			tmp->coeff = a->coeff + b->coeff;
+			printf("%dx^%d\n", tmp->coeff, a->exp);
+		}
+		a = a->next;
+		b = b->next;
+	}
+}
+
+polynomial *sub_poly(polynomial *a, polynomial *b)
+{
+	struct term *tmp = malloc(sizeof(*tmp));
+
+	while(a && b != NULL) {
+		if (a->exp == b->exp) {
+			tmp->coeff = a->coeff - b->coeff;
+			printf("%dx^%d\n", tmp->coeff, a->exp);
+		}
+		a = a->next;
+		b = b->next;
+	}
+}
