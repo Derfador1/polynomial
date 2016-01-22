@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 struct term *make_term(int coeff, int exp) 
 {
@@ -86,4 +87,22 @@ polynomial *sub_poly(polynomial *a, polynomial *b)
 		a = a->next;
 		b = b->next;
 	}
+}
+
+bool is_equal(polynomial *a, polynomial *b)
+{
+	struct term *tmp_a = a;
+	struct term *tmp_b = b;
+
+	while(a && b) {
+		if(tmp_a->coeff == tmp_b->coeff && tmp_a->exp == tmp_b->exp)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 }
