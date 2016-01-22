@@ -168,20 +168,23 @@ polynomial *sub_poly(polynomial *a, polynomial *b)
 
 bool is_equal(polynomial *a, polynomial *b)
 {
-	//struct term *tmp_a = a;
-	//struct term *tmp_b = b;
 	while(a && b) {
-		if(a->coeff == b->coeff && a->exp == b->exp)
-		{
-			a = a->next;
-			b = b->next;
-		}
-		else
+		if(a->coeff != b->coeff || a->exp != b->exp)
 		{
 			return false;
+			//break;
 		}
+		a = a->next;
+		b = b->next;
 	}
 
-	return true;
+	if(a == NULL && b == NULL)
+	{
+		return true;
+	}
+	else if(a != NULL || b != NULL)
+	{
+		return false;
+	}
 
 }
