@@ -76,22 +76,12 @@ polynomial *add_poly(polynomial *a, polynomial *b)
 	struct term *new = make_term(0, 0);
 	struct term *head = new;
 
-	struct term *tmp_a = a;
-	struct term *tmp_b = b;
-
 	while(a && b) 
 	{
 		if (a->exp > b->exp)
 		{
 			new->coeff = a->coeff;
 			new->exp = a->exp;
-			if(a->next == NULL)
-			{
-				new->next = make_term(0,0);
-				new->coeff = tmp_b->coeff;
-				new->exp = tmp_b->exp;
-				break;
-			}
 			new->next = make_term(0,0);
 			new = new->next;
 			a = a->next;
@@ -100,13 +90,6 @@ polynomial *add_poly(polynomial *a, polynomial *b)
 		{
 			new->coeff = b->coeff;
 			new->exp = b->exp;
-			if(b->next == NULL)
-			{
-				new->next = make_term(0,0);
-				new->next->coeff = tmp_a->coeff;
-				new->next->exp = tmp_a->exp;
-				break;
-			}
 			new->next = make_term(0,0);
 			new = new->next;
 			b = b->next;
@@ -120,6 +103,17 @@ polynomial *add_poly(polynomial *a, polynomial *b)
 			a = a->next;
 			b = b->next;
 		}
+	}
+
+	if(a)
+	{
+		new->next = make_term(a->coeff, a->exp);
+		a = a->next;
+	}
+	else if(b)
+	{
+		new->next = make_term(b->coeff, b->exp);
+		b = b->next;
 	}
 
 	return head;
