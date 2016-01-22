@@ -56,14 +56,15 @@ char *poly_to_string(polynomial *p)
 
 
 	while(p->next) {
-		storage = realloc(storage, 50);
+		storage = realloc(storage, sizeof(storage)+25);
 		coeff = p->coeff;
 		exp = p->exp;
 
-		snprintf(storage, 50, "+%dx^%d", coeff, exp);
+		snprintf(storage, sizeof(storage)+25, "+%dx^%d", coeff, exp);
 		strncat(str, storage, 50);
 
 		p = p->next;
+
 	}
 
 	free(storage);
@@ -74,7 +75,9 @@ polynomial *add_poly(polynomial *a, polynomial *b)
 {
 	struct term *new = make_term(0, 0);
 	struct term *head = new;
-	//the head of the list is the tmp i am returning
+
+	struct term *tmp_a = a;
+	struct term *tmp_b = b;
 
 	while(a && b) 
 	{
@@ -84,7 +87,9 @@ polynomial *add_poly(polynomial *a, polynomial *b)
 			new->exp = a->exp;
 			if(a->next == NULL)
 			{
-				new->next = b;
+				new->next = make_term(0,0);
+				new->coeff = tmp_b->coeff;
+				new->exp = tmp_b->exp;
 				break;
 			}
 			new->next = make_term(0,0);
@@ -97,7 +102,9 @@ polynomial *add_poly(polynomial *a, polynomial *b)
 			new->exp = b->exp;
 			if(b->next == NULL)
 			{
-				new->next = a;
+				new->next = make_term(0,0);
+				new->next->coeff = tmp_a->coeff;
+				new->next->exp = tmp_a->exp;
 				break;
 			}
 			new->next = make_term(0,0);
@@ -123,7 +130,10 @@ polynomial *sub_poly(polynomial *a, polynomial *b)
 {
 	struct term *new = make_term(0, 0);
 	struct term *head = new;
-	//the head of the list is the tmp i am returning
+
+
+	struct term *tmp_a = a;
+	struct term *tmp_b = b;
 
 	while(a && b) 
 	{
@@ -133,7 +143,9 @@ polynomial *sub_poly(polynomial *a, polynomial *b)
 			new->exp = a->exp;
 			if(a->next == NULL)
 			{
-				new->next = b;
+				new->next = make_term(0,0);
+				new->coeff = tmp_b->coeff;
+				new->exp = tmp_b->exp;
 				break;
 			}
 			new->next = make_term(0,0);
@@ -146,7 +158,9 @@ polynomial *sub_poly(polynomial *a, polynomial *b)
 			new->exp = b->exp;
 			if(b->next == NULL)
 			{
-				new->next = a;
+				new->next = make_term(0,0);
+				new->coeff = tmp_a->coeff;
+				new->exp = tmp_a->exp;
 				break;
 			}
 			new->next = make_term(0,0);
@@ -174,7 +188,6 @@ bool is_equal(polynomial *a, polynomial *b)
 		if(a->coeff != b->coeff || a->exp != b->exp)
 		{
 			return false;
-			//break;
 		}
 		a = a->next;
 		b = b->next;
