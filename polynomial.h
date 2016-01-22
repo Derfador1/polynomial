@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 struct term {
 	int coeff;
@@ -16,3 +17,4 @@ void poly_print(polynomial *eqn);
 char *poly_to_string(polynomial *p);
 polynomial *add_poly(polynomial *a, polynomial *b);
 polynomial *sub_poly(polynomial *a, polynomial *b);
+bool is_equal(polynomial *a, polynomial *b);
