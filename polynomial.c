@@ -45,33 +45,61 @@ void poly_print(polynomial *eqn)
 
 char *poly_to_string(polynomial *p)
 {
+	struct term *tmp_head = p;
 	char *str = malloc(50);
-	int i = 0;
+	char *storage = malloc(50);
+	int coeff = 0;
+	int exp = 0;
 
-	while(p->coeff) {
-		if(p->exp > 1) {
-			//str[i] = ((char)p->coeff);
-			//printf("%d\n", str[i]);
-			printf("%c%d", p->coeff > 0 ? '+' : '\0', p->coeff);
-			printf("x^%d", p->exp);	
-			break;
-		}
-		else if(p->exp == 1) {
-		}
+	//tmp_head->next->coeff = 1;
+	//tmp_head->next->exp = 2;
+
+	while(tmp_head) {
+		storage = realloc(storage, 50);
+		coeff = tmp_head->coeff;
+		exp = tmp_head->exp;
+
+		snprintf(storage, 50, "+%dx^%d", coeff, exp);
+		strcat(str, storage);
+		printf("here : %s\n", storage);
+		printf("here : %s\n", str);
+
+		tmp_head = tmp_head->next;
 	}
+	return str;
 }
 
 polynomial *add_poly(polynomial *a, polynomial *b)
 {
-	struct term *tmp = malloc(sizeof(*tmp));
+	//needs to be a while loop to check for number of terms to make a tmp for
+	struct term *new = make_term(0, 0);
+	struct term *head = node;
+	//the head of the list is the tmp i am returning
 
-	while(a && b != NULL) {
-		if (a->exp == b->exp) {
-			tmp->coeff = a->coeff + b->coeff;
-			printf("%dx^%d\n", tmp->coeff, a->exp);
+	while(tmp_a) {
+		while(tmp_b) {
+			printf("%dx^%d\n", tmp_a->coeff, tmp_a->exp);
+			printf("%dx^%d\n", tmp_b->coeff, tmp_b->exp);
+
+			if (tmp_a->exp > tmp_b->exp)
+			{
+				tmp_a->next = tmp_b;
+				poly_print(tmp_a);
+			}
+			else if(tmp_a->exp < tmp_b->exp)
+			{
+				tmp_b->next = tmp_b;
+				printf("%dx^%d\n", tmp_a->next->coeff, tmp_a->next->exp);
+			}
+			else
+			{
+				tmp_a->coeff = tmp_a->coeff + tmp_b->coeff;
+				printf("%dx^%d\n", tmp_a->coeff, tmp_a->exp);
+			}
+
+			tmp_b = tmp_b->next;
 		}
-		a = a->next;
-		b = b->next;
+		tmp_a = tmp_a->next;
 	}
 }
 
@@ -91,18 +119,20 @@ polynomial *sub_poly(polynomial *a, polynomial *b)
 
 bool is_equal(polynomial *a, polynomial *b)
 {
-	struct term *tmp_a = a;
-	struct term *tmp_b = b;
-
+	//struct term *tmp_a = a;
+	//struct term *tmp_b = b;
 	while(a && b) {
-		if(tmp_a->coeff == tmp_b->coeff && tmp_a->exp == tmp_b->exp)
+		if(a->coeff == b->coeff && a->exp == b->exp)
 		{
-			return true;
+			a = a->next;
+			b = b->next;
 		}
 		else
 		{
 			return false;
 		}
 	}
+
+	return true;
 
 }
