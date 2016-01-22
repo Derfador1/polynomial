@@ -18,3 +18,4 @@ char *poly_to_string(polynomial *p);
 polynomial *add_poly(polynomial *a, polynomial *b);
 polynomial *sub_poly(polynomial *a, polynomial *b);
 bool is_equal(polynomial *a, polynomial *b);
+void apply_to_each_term(polynomial *p, void (*transform)(struct term *));
