@@ -62,11 +62,23 @@ char *poly_to_string(polynomial *p)
 		coeff = p->coeff;
 		exp = p->exp;
 
-		snprintf(storage, strlen(storage)+20, "+%dx^%d", coeff, exp);
-		strncat(str, storage, strlen(storage)+20);
+		if(coeff)
+		{
+			printf("%c%d", coeff > 0 ? '+' : '\0', coeff);
+			//create a check to check + or - and then terminate by null byte
+			if(exp > 1)
+			{
+				snprintf(storage, strlen(storage)+20, "%dx^%d", coeff, exp);
+				strncat(str, storage, strlen(storage)+20);
+			}
+			else if(exp == 1)
+			{
+				snprintf(storage, strlen(storage)+20, "x");
+				strncat(str, storage, strlen(storage)+20);
+			}
+		}
 
 		p = p->next;
-
 		//add check for + or -
 
 	}
