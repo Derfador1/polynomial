@@ -77,40 +77,32 @@ char *poly_to_string(polynomial *p)
 
 polynomial *add_poly(polynomial *a, polynomial *b)
 {
-	struct term *new = make_term(0, 0);
-	struct term *head = new;
-
+	struct term *new = NULL;
+	struct term *head = NULL;
 	while(a || b) 
 	{
-		//printf("A: %d B: %d\n", a->exp, b->exp);
 		if (a && b)
 		{
-			printf("A: %d B: %d\n", a->exp, b->exp);
+			printf("\nA: %d B: %d\n", a->exp, b->exp);
 			if (a->exp > b->exp)
 			{
-				new->coeff = a->coeff;
-				new->exp = a->exp;
-				new->next = make_term(0,0);
-				new = new->next;
+				//new->coeff = a->coeff;
+				//new->exp = a->exp;
+				new = make_term(a->coeff,a->exp);
 				printf("%d\n", a->exp);
 				a = a->next;
 			}
 			else if(a->exp < b->exp)
 			{
-				new->coeff = b->coeff;
-				new->exp = b->exp;
-				new->next = make_term(0,0);
-				new = new->next;
+				//new->coeff = b->coeff;
+				//new->exp = b->exp;
+				new = make_term(b->coeff,b->exp);
 				printf("if 2\n");
 				b = b->next;
 			}
 			else if(a->exp == b->exp)
 			{
-				printf("here\n");
-				new->coeff = a->coeff + b->coeff;
-				new->exp = b->exp; 
-				new->next = make_term(0,0);
-				new = new->next;
+				new->next = make_term((a->coeff + b->coeff), b->exp);
 				printf("if 3\n");
 				a = a->next;
 				b = b->next;
@@ -119,7 +111,7 @@ polynomial *add_poly(polynomial *a, polynomial *b)
 		else if(a)
 		{
 			new->next = make_term(a->coeff, a->exp);
-			new = new->next;
+			//new = new->next;
 			a = a->next;
 			printf("hello\n");
 		}
@@ -127,10 +119,14 @@ polynomial *add_poly(polynomial *a, polynomial *b)
 		else if(b)
 		{
 			new->next = make_term(b->coeff, b->exp);
-			new = new->next;
+			//new = new->next;
 			printf("b\n");
 			b = b->next;
 		}
+
+		if(head == NULL)
+			head = new;		
+
 	}
 
 	return head;
