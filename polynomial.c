@@ -51,18 +51,17 @@ char *poly_to_string(polynomial *p)
 	int coeff = 0;
 	int exp = 0;
 
-	//tmp_head->next->coeff = 1;
-	//tmp_head->next->exp = 2;
 
-	while(tmp_head) {
+	while(tmp_head->next) {
 		storage = realloc(storage, 50);
 		coeff = tmp_head->coeff;
 		exp = tmp_head->exp;
 
 		snprintf(storage, 50, "+%dx^%d", coeff, exp);
 		strcat(str, storage);
-		printf("here : %s\n", storage);
-		printf("here : %s\n", str);
+		printf("\n");
+		printf("Storage : %s\n", storage);
+		printf("Str : %s\n", str);
 
 		tmp_head = tmp_head->next;
 	}
