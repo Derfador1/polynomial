@@ -54,6 +54,9 @@ char *poly_to_string(polynomial *p)
 	int coeff = 0;
 	int exp = 0;
 
+	//need to add check for if it is 0 or not
+
+	//if(coeff)
 
 	while(p) {
 		coeff = p->coeff;
