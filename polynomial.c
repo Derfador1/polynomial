@@ -53,6 +53,7 @@ char *poly_to_string(polynomial *p)
 
 	int coeff = 0;
 	int exp = 0;
+	size_t var = 50;
 
 	//need to add check for if it is 0 or not
 
@@ -62,24 +63,42 @@ char *poly_to_string(polynomial *p)
 		coeff = p->coeff;
 		exp = p->exp;
 
+		//printf("exp: %d\n", exp);
+		//printf("coeff: %d\n", coeff);
+
 		if(coeff)
 		{
-			printf("%c%d", coeff > 0 ? '+' : '\0', coeff);
-			//create a check to check + or - and then terminate by null byte
-			if(exp > 1)
+			if (coeff > 1)
 			{
-				snprintf(storage, strlen(storage)+20, "%dx^%d", coeff, exp);
-				strncat(str, storage, strlen(storage)+20);
+				snprintf(storage, var, "+%d", coeff);
+				//strncat(str, storage, strlen(storage)+20);
+			}
+			else if(coeff < -1)
+			{
+				snprintf(storage, var, "%d", coeff);
+			}
+			else if(exp == 0)
+			{
+				snprintf(storage, var, "%d", coeff);
+			}
+
+			//strncat(str, storage, var);
+
+			if(exp > 1 || exp <= -1)
+			{
+				snprintf(storage, var, "x^%d", exp);
 			}
 			else if(exp == 1)
 			{
-				snprintf(storage, strlen(storage)+20, "x");
-				strncat(str, storage, strlen(storage)+20);
+				snprintf(storage, var, "x");
 			}
-		}
 
+			var += strlen(storage);
+			strncat(str, storage, var);
+
+
+		}
 		p = p->next;
-		//add check for + or -
 
 	}
 
@@ -92,46 +111,56 @@ polynomial *add_poly(polynomial *a, polynomial *b)
 	struct term *new = make_term(0, 0);
 	struct term *head = new;
 
-	while(a && b) 
+	while(a || b) 
 	{
-		if (a->exp > b->exp)
+		printf("poop\n");
+		if (a && b)
 		{
-			new->coeff = a->coeff;
-			new->exp = a->exp;
-			new->next = make_term(0,0);
-			new = new->next;
+			printf("same\n");
+			if (a->exp > b->exp)
+			{
+				printf("same1\n");
+				new->coeff = a->coeff;
+				new->exp = a->exp;
+				new->next = make_term(0,0);
+				new = new->next;
+				a = a->next;
+			}
+			else if(a->exp < b->exp)
+			{
+				printf("%d\n", a->exp);
+				printf("%d\n",b->exp);
+				printf("same2\n");
+				new->coeff = b->coeff;
+				new->exp = b->exp;
+				new->next = make_term(0,0);
+				new = new->next;
+				b = b->next;
+			}
+			else if(a->exp == b->exp)
+			{
+				printf("same3\n");
+				new->coeff = b->coeff + a->coeff;
+				new->exp = b->exp;
+				new->next = make_term(0,0);
+				new = new->next;
+				a = a->next;
+				b = b->next;
+			}
+		}
+		else if(a)
+		{
+			printf("jhere\n");
+			new->next = make_term(a->coeff, a->exp);
 			a = a->next;
 		}
-		else if(a->exp < b->exp)
-		{
-			new->coeff = b->coeff;
-			new->exp = b->exp;
-			new->next = make_term(0,0);
-			new = new->next;
-			b = b->next;
-		}
-		else if(a->exp == b->exp)
-		{
-			new->coeff = b->coeff + a->coeff;
-			new->exp = b->exp;
-			new->next = make_term(0,0);
-			new = new->next;
-			a = a->next;
-			b = b->next;
-		}
-	}
 
-	if(a)
-	{
-		printf("jhere\n");
-		new->next = make_term(a->coeff, a->exp);
-		a = a->next;
-	}
-	else if(b)
-	{
-		printf("ihere\n");
-		new->next = make_term(b->coeff, b->exp);
-		b = b->next;
+		else if(b)
+		{
+			printf("ihere\n");
+			new->next = make_term(b->coeff, b->exp);
+			b = b->next;
+		}
 	}
 
 	return head;
@@ -143,46 +172,56 @@ polynomial *sub_poly(polynomial *a, polynomial *b)
 	struct term *new = make_term(0, 0);
 	struct term *head = new;
 
-	while(a && b) 
+	while(a || b) 
 	{
-		if (a->exp > b->exp)
+		printf("while loop\n");
+		if (a && b)
 		{
-			new->coeff = a->coeff;
-			new->exp = a->exp;
-			new->next = make_term(0,0);
-			new = new->next;
+			printf("first if\n");
+			if (a->exp > b->exp)
+			{
+				printf("same1\n");
+				new->coeff = a->coeff;
+				new->exp = a->exp;
+				new->next = make_term(0,0);
+				new = new->next;
+				a = a->next;
+			}
+			else if(a->exp < b->exp)
+			{
+				printf("same2\n");
+				new->coeff = b->coeff;
+				new->exp = b->exp;
+				new->next = make_term(0,0);
+				new = new->next;
+				b = b->next;
+			}
+			else if(a->exp == b->exp)
+			{
+				printf("same3\n");
+				new->coeff = a->coeff - b->coeff;
+				new->exp = b->exp;
+				new->next = make_term(0,0);
+				new = new->next;
+				a = a->next;
+				b = b->next;
+			}
+		}
+		else if(a)
+		{
+			printf("jhere\n");
+			new->next = make_term(a->coeff, a->exp);
 			a = a->next;
 		}
-		else if(a->exp < b->exp)
+		else if(b)
 		{
-			new->coeff = b->coeff;
-			new->exp = b->exp;
-			new->next = make_term(0,0);
-			new = new->next;
+			printf("ihere\n");
+			printf("exp: %d\n", b->exp);
+			printf("coeff: %d\n", b->coeff);
+			new->next = make_term(b->coeff, b->exp);
 			b = b->next;
 		}
-		else if(a->exp == b->exp)
-		{
-			new->coeff = a->coeff - b->coeff;
-			new->exp = b->exp;
-			new->next = make_term(0,0);
-			new = new->next;
-			a = a->next;
-			b = b->next;
-		}
-	}
 
-	if(a)
-	{
-		printf("jhere\n");
-		new->next = make_term(a->coeff, a->exp);
-		a = a->next;
-	}
-	else if(b)
-	{
-		printf("ihere\n");
-		new->next = make_term(b->coeff, b->exp);
-		b = b->next;
 	}
 
 	return head;
