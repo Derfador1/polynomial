@@ -55,15 +55,16 @@ char *poly_to_string(polynomial *p)
 	int exp = 0;
 
 
-	while(p->next) {
-		storage = realloc(storage, sizeof(storage)+25);
+	while(p) {
 		coeff = p->coeff;
 		exp = p->exp;
 
-		snprintf(storage, sizeof(storage)+25, "+%dx^%d", coeff, exp);
-		strncat(str, storage, 50);
+		snprintf(storage, strlen(storage)+20, "+%dx^%d", coeff, exp);
+		strncat(str, storage, strlen(storage)+20);
 
 		p = p->next;
+
+		//add check for + or -
 
 	}
 
@@ -107,11 +108,13 @@ polynomial *add_poly(polynomial *a, polynomial *b)
 
 	if(a)
 	{
+		printf("jhere\n");
 		new->next = make_term(a->coeff, a->exp);
 		a = a->next;
 	}
 	else if(b)
 	{
+		printf("ihere\n");
 		new->next = make_term(b->coeff, b->exp);
 		b = b->next;
 	}
@@ -156,11 +159,13 @@ polynomial *sub_poly(polynomial *a, polynomial *b)
 
 	if(a)
 	{
+		printf("jhere\n");
 		new->next = make_term(a->coeff, a->exp);
 		a = a->next;
 	}
 	else if(b)
 	{
+		printf("ihere\n");
 		new->next = make_term(b->coeff, b->exp);
 		b = b->next;
 	}
