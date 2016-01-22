@@ -117,7 +117,7 @@ polynomial *add_poly(polynomial *a, polynomial *b)
 	return head;
 }
 
-/*
+
 polynomial *sub_poly(polynomial *a, polynomial *b)
 {
 	struct term *new = make_term(0, 0);
@@ -165,7 +165,6 @@ polynomial *sub_poly(polynomial *a, polynomial *b)
 
 	return head;
 }
-*/
 
 
 bool is_equal(polynomial *a, polynomial *b)
