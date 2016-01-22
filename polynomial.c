@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 struct term *make_term(int coeff, int exp) 
 {
@@ -40,3 +41,22 @@ void poly_print(polynomial *eqn)
 	}
 	poly_print(eqn->next);
 }
+
+char *poly_to_string(polynomial *p)
+{
+	char *str = malloc(50);
+	int i = 0;
+
+	while(p->coeff) {
+		if(p->exp > 1) {
+			//str[i] = ((char)p->coeff);
+			//printf("%d\n", str[i]);
+			printf("%c%d", p->coeff > 0 ? '+' : '\0', p->coeff);
+			printf("x^%d", p->exp);	
+			break;
+		}
+		else if(p->exp == 1) {
+		}
+	}
+}
+
