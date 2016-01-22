@@ -45,26 +45,28 @@ void poly_print(polynomial *eqn)
 
 char *poly_to_string(polynomial *p)
 {
-	struct term *tmp_head = p;
-	char *str = malloc(50);
-	char *storage = malloc(50);
+	char *str = malloc(sizeof(char*)*100);
+	char *storage = malloc(sizeof(char*)*100);
+
+	memset(str, '\0', sizeof(char*)*100);
+	memset(storage, '\0', sizeof(char*)*100);
+
 	int coeff = 0;
 	int exp = 0;
 
 
-	while(tmp_head->next) {
+	while(p->next) {
 		storage = realloc(storage, 50);
-		coeff = tmp_head->coeff;
-		exp = tmp_head->exp;
+		coeff = p->coeff;
+		exp = p->exp;
 
 		snprintf(storage, 50, "+%dx^%d", coeff, exp);
-		strcat(str, storage);
-		printf("\n");
-		printf("Storage : %s\n", storage);
-		printf("Str : %s\n", str);
+		strncat(str, storage, 50);
 
-		tmp_head = tmp_head->next;
+		p = p->next;
 	}
+
+	free(storage);
 	return str;
 }
 
@@ -178,22 +180,20 @@ bool is_equal(polynomial *a, polynomial *b)
 		b = b->next;
 	}
 
-	if(a == NULL && b == NULL)
-	{
-		return true;
-	}
-	else if(a != NULL || b != NULL)
+
+	if(a != NULL || b != NULL)
 	{
 		return false;
 	}
 
+	return true;
 }
 
 void apply_to_each_term(polynomial *p, void (*transform)(struct term *))
 {
 	while(p)
 	{
-		tranform(p);
+		transform(p);
 		p = p->next;
 	}
 }
