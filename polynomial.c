@@ -190,9 +190,7 @@ polynomial *sub_poly(polynomial *a, polynomial *b)
 		if(head == NULL)
 			head = new;		
 
-
 	}
-
 	return head;
 }
 
@@ -224,4 +222,15 @@ void apply_to_each_term(polynomial *p, void (*transform)(struct term *))
 		transform(p);
 		p = p->next;
 	}
+}
+
+double eval_poly(polynomial *p, double x)
+{
+	double total = 0;
+	while(p)
+	{
+		total += pow(p->coeff*x, p->exp);
+		p = p->next;
+	}
+	return total;
 }
