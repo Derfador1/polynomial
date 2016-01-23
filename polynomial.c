@@ -238,6 +238,11 @@ bool is_equal(polynomial *a, polynomial *b)
 
 void apply_to_each_term(polynomial *p, void (*transform)(struct term *))
 {
+	if(!p) {
+		fprintf(stderr, "There was an error\n");
+		exit(1);
+	}
+
 	while(p)
 	{
 		transform(p);
