@@ -184,6 +184,11 @@ polynomial *sub_poly(polynomial *a, polynomial *b)
 				a = a->next;
 				b = b->next;
 			}
+			else
+			{
+				printf("Some error occured\n");
+				break;
+			}
 		}
 		else if(a)
 		{
@@ -196,6 +201,11 @@ polynomial *sub_poly(polynomial *a, polynomial *b)
 			new->next = make_term(b->coeff, b->exp);
 			//new = new->next;
 			b = b->next;
+		}
+		else
+		{
+			printf("Some error occured\n");
+			break;
 		}
 
 		if(head == NULL)
