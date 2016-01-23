@@ -135,8 +135,8 @@ polynomial *add_poly(polynomial *a, polynomial *b)
 
 polynomial *sub_poly(polynomial *a, polynomial *b)
 {
-	struct term *new = make_term(0, 0);
-	struct term *head = new;
+	struct term *new = NULL;
+	struct term *head = NULL;
 
 	/*
 	while(b)
@@ -153,27 +153,20 @@ polynomial *sub_poly(polynomial *a, polynomial *b)
 		{
 			if (a->exp > b->exp)
 			{
-				new->coeff = a->coeff;
-				new->exp = a->exp;
-				new->next = make_term(0,0);
-				new = new->next;
+				new = make_term(a->coeff, a->exp);
+				//new = new->next;
 				a = a->next;
 			}
 			else if(a->exp < b->exp)
 			{
-
-				new->coeff = b->coeff;
-				new->exp = b->exp;
-				new->next = make_term(0,0);
-				new = new->next;
+				new = make_term(b->coeff,b->exp);
+				//new = new->next;
 				b = b->next;
 			}
 			else if(a->exp == b->exp)
 			{
-				new->coeff = a->coeff - b->coeff;
-				new->exp = b->exp;
-				new->next = make_term(0,0);
-				new = new->next;
+				new = make_term((a->coeff - b->coeff),b->exp);
+				//new = new->next;
 				a = a->next;
 				b = b->next;
 			}
@@ -181,15 +174,19 @@ polynomial *sub_poly(polynomial *a, polynomial *b)
 		else if(a)
 		{
 			new->next = make_term(a->coeff, a->exp);
-			new = new->next;
+			//new = new->next;
 			a = a->next;
 		}
 		else if(b)
 		{
 			new->next = make_term(b->coeff, b->exp);
-			new = new->next;
+			//new = new->next;
 			b = b->next;
 		}
+
+		if(head == NULL)
+			head = new;		
+
 
 	}
 
