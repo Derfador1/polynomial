@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <math.h>
 
 struct term *make_term(int coeff, int exp) 
 {
@@ -45,6 +46,11 @@ void poly_print(polynomial *eqn)
 
 char *poly_to_string(polynomial *p)
 {
+	if(!p) {
+		fprintf(stderr, "There was an error\n");
+		exit(1);
+	}
+
 	char *str = malloc(sizeof(char*)*100);
 	char *storage = malloc(sizeof(char*)*100);
 
