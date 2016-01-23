@@ -252,6 +252,11 @@ void apply_to_each_term(polynomial *p, void (*transform)(struct term *))
 
 double eval_poly(polynomial *p, double x)
 {
+	if(!p) {
+		fprintf(stderr, "There was an error\n");
+		exit(1);
+	}
+
 	double total = 0;
 	while(p)
 	{
