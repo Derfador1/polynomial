@@ -58,18 +58,41 @@ char *poly_to_string(polynomial *p)
 	memset(storage, '\0', sizeof(char*)*100);
 
 	size_t var = 25;
+	//struct term *tmp = p;
 
 	while(p) 
 	{
+
 		storage = realloc(storage, sizeof(storage) + var);
 
-		if(p->exp > 1 && p->coeff > 1)
+		if(p->coeff < 0)
 		{
-			snprintf(storage, var, "%dx^%d", p->coeff, p->exp);
+			p->coeff *= -1;
 		}
-		else if(p->exp == 1)
+		else
 		{
-			snprintf(storage, var, "%dx", p->coeff);
+			printf("%d\n", p->coeff);
+		}
+
+		if(p->coeff != 0)
+		{
+			if(!p->exp)
+			{
+				snprintf(storage, var, "%d", p->coeff);
+			}
+			else
+			{
+				if(p->exp == 1)
+				{
+					snprintf(storage, var, "%dx", p->coeff);
+				}
+				else
+				{
+					snprintf(storage, var, "%dx^%d", p->coeff, p->exp);
+				}
+				
+			}
+
 		}
 
 
@@ -79,6 +102,10 @@ char *poly_to_string(polynomial *p)
 		{
 			if(p->next->coeff > 0)
 				strncat(str, " + ", 5);
+			else
+			{
+				strncat(str, " - ", 5);
+			}
 		}
 	
 
@@ -152,14 +179,8 @@ polynomial *sub_poly(polynomial *a, polynomial *b)
 {
 	struct term *new = NULL;
 	struct term *head = NULL;
-	struct term *tmp = b;
+	//struct term *tmp = b;
 
-	while(b)
-	{
-		b->coeff *= -1;
-		b = b->next;
-	}
-	b = tmp;
 
 	while(a || b) 
 	{
