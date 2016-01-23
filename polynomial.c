@@ -51,24 +51,41 @@ char *poly_to_string(polynomial *p)
 	memset(str, '\0', sizeof(char*)*100);
 	memset(storage, '\0', sizeof(char*)*100);
 
-	size_t var = 50;
+	size_t var = 25;
 
-	while(p) {;
+	while(p) 
+	{
 		printf("exp: %d\n", p->exp);
 		printf("coeff: %d\n", p->coeff);
 
-		if(p->coeff)
+		storage = realloc(storage, sizeof(storage) + var);
+
+		if(p->coeff < 0)
 		{
-			if (p->coeff > 1)
-
-
-			var += strlen(storage);
-			strncat(str, storage, var);
-
-
+			printf("negative\n");
 		}
-		p = p->next;
 
+		if(p->exp > 1 && p->coeff > 0)
+		{
+			snprintf(storage, var, "%dx^%d", p->coeff, p->exp);
+		}
+		else if(p->exp == 1)
+		{
+			snprintf(storage, var, "%dx", p->coeff);
+		}
+
+
+		strncat(str, storage, var);
+
+		if(p->next)
+		{
+			if(p->next->coeff > 0)
+				strncat(str, " + ", 5);
+		}
+	
+
+		var *= 2;
+		p = p->next;
 	}
 
 	free(storage);
@@ -83,27 +100,22 @@ polynomial *add_poly(polynomial *a, polynomial *b)
 	{
 		if (a && b)
 		{
-			printf("\nA: %d B: %d\n", a->exp, b->exp);
 			if (a->exp > b->exp)
 			{
-				//new->coeff = a->coeff;
-				//new->exp = a->exp;
-				new = make_term(a->coeff,a->exp);
 				printf("%d\n", a->exp);
+				new = make_term(a->coeff,a->exp);
 				a = a->next;
 			}
 			else if(a->exp < b->exp)
 			{
-				//new->coeff = b->coeff;
-				//new->exp = b->exp;
-				new = make_term(b->coeff,b->exp);
 				printf("if 2\n");
+				new = make_term(b->coeff,b->exp);
 				b = b->next;
 			}
 			else if(a->exp == b->exp)
 			{
-				new->next = make_term((a->coeff + b->coeff), b->exp);
 				printf("if 3\n");
+				new = make_term((a->coeff + b->coeff), b->exp);
 				a = a->next;
 				b = b->next;
 			}
@@ -137,15 +149,7 @@ polynomial *sub_poly(polynomial *a, polynomial *b)
 {
 	struct term *new = NULL;
 	struct term *head = NULL;
-
-	/*
-	while(b)
-	{
-		b->coeff *= -1;
-		b = b->next;
-	}
-	*/
-
+	//struct term *tmp = b;
 
 	while(a || b) 
 	{
