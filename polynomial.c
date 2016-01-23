@@ -63,11 +63,6 @@ char *poly_to_string(polynomial *p)
 	{
 		storage = realloc(storage, sizeof(storage) + var);
 
-		if(p->coeff < 0)
-		{
-			printf("negative\n");
-		}
-
 		if(p->exp > 1 && p->coeff > 1)
 		{
 			snprintf(storage, var, "%dx^%d", p->coeff, p->exp);
@@ -119,6 +114,11 @@ polynomial *add_poly(polynomial *a, polynomial *b)
 				a = a->next;
 				b = b->next;
 			}
+			else
+			{
+				printf("Some error occured\n");
+				break;
+			}
 		}
 		else if(a)
 		{
@@ -132,6 +132,11 @@ polynomial *add_poly(polynomial *a, polynomial *b)
 			new->next = make_term(b->coeff, b->exp);
 			//new = new->next;
 			b = b->next;
+		}
+		else
+		{
+			printf("Some error occured\n");
+			break;
 		}
 
 		if(head == NULL)
